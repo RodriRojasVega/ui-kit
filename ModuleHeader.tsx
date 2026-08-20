@@ -1,66 +1,72 @@
 // src/components/ui/ModuleHeader.tsx
-import type { ReactNode } from 'react';
-import { clsx, type ClassValue } from 'clsx';
-import { twMerge } from 'tailwind-merge';
+import { ReactNode } from 'react';
+import { ArrowLeft } from 'lucide-react';
 import { Button } from './Button';
 
-function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
-}
-
-interface ModuleHeaderProps {
-  icon: ReactNode;
+export interface ModuleHeaderProps {
+  icon?: ReactNode;
   title: string;
   subtitle?: string;
+  badges?: ReactNode; // <-- Nueva prop para los "dodges" (etiquetas)
   showKpis?: boolean;
   onToggleKpis?: () => void;
   kpiButtonText?: string;
-  primaryAction: ReactNode;
-  className?: string;
+  primaryAction?: ReactNode;
+  backAction?: () => void;
+  backLabel?: string;
 }
 
 export function ModuleHeader({
   icon,
   title,
   subtitle,
-  showKpis = false,
+  badges,
+  showKpis,
   onToggleKpis,
-  kpiButtonText = "KPIs",
+  kpiButtonText = 'KPIs',
   primaryAction,
-  className
+  backAction,
+  backLabel = 'Volver'
 }: ModuleHeaderProps) {
   return (
-    <div className={cn("flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-transparent py-2 shrink-0", className)}>
-      {/* Izquierda: Icono y Títulos */}
+    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-border shrink-0 animate-fade-in">
       <div className="flex items-center gap-3">
-        <div className="p-2.5 bg-surface border border-border rounded-xl text-primary flex items-center justify-center shadow-inner">
-          {icon}
-        </div>
+        {backAction && (
+          <div className="pr-2 border-r border-border mr-1">
+            <Button variant="ghost" size="sm" icon={<ArrowLeft size={16} />} onClick={backAction}>
+              {backLabel}
+            </Button>
+          </div>
+        )}
+        
+        {icon && (
+          <div className="p-2 bg-primary/10 text-primary rounded-lg border border-primary/20 shrink-0">
+            {icon}
+          </div>
+        )}
         <div>
-          <h2 className="text-xl font-bold text-foreground tracking-wide flex items-center gap-2">
-            {title}
-          </h2>
-          {subtitle && <p className="text-xs text-muted mt-0.5">{subtitle}</p>}
+          <div className="flex flex-wrap items-center gap-3">
+            <h1 className="text-xl font-bold text-foreground tracking-tight">
+              {title}
+            </h1>
+            {/* Renderizado de Badges al lado del título */}
+            {badges && <div className="flex items-center gap-2">{badges}</div>}
+          </div>
+          {subtitle && <p className="text-sm text-muted mt-0.5">{subtitle}</p>}
         </div>
       </div>
 
-      {/* Derecha: Botón de KPIs condicional y Acción Principal */}
-      <div className="flex items-center gap-2.5 w-full sm:w-auto justify-end">
-        {/* Renderiza el botón solo si la función onToggleKpis fue provista */}
-        {typeof onToggleKpis === 'function' && (
-          <Button
-            variant={showKpis ? 'primary' : 'secondary'}
-            size="sm"
+      <div className="flex items-center gap-2">
+        {onToggleKpis && (
+          <Button 
+            variant={showKpis ? 'primary' : 'secondary'} 
+            size="sm" 
             onClick={onToggleKpis}
-            className="text-xs"
           >
-            <span>📊</span>
-            <span className="ml-1.5">{kpiButtonText}</span>
-            <span className="text-[10px] ml-1 opacity-70">{showKpis ? "▲" : "▼"}</span>
+            {kpiButtonText}
           </Button>
         )}
-
-        {primaryAction}
+        {primaryAction && primaryAction}
       </div>
     </div>
   );
