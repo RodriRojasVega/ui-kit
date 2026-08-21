@@ -5,13 +5,14 @@ import { Button } from './Button';
 
 export interface ModuleHeaderProps {
   icon?: ReactNode;
-  title: string;
+  title: ReactNode;
   subtitle?: string;
-  badges?: ReactNode; // <-- Nueva prop para los "dodges" (etiquetas)
+  badges?: ReactNode;
   showKpis?: boolean;
   onToggleKpis?: () => void;
   kpiButtonText?: string;
   primaryAction?: ReactNode;
+  action?: ReactNode; // <-- Añadido para compatibilidad con todos los módulos
   backAction?: () => void;
   backLabel?: string;
 }
@@ -25,9 +26,13 @@ export function ModuleHeader({
   onToggleKpis,
   kpiButtonText = 'KPIs',
   primaryAction,
+  action, // <-- Capturamos la prop action
   backAction,
   backLabel = 'Volver'
 }: ModuleHeaderProps) {
+  // Usamos action si está presente, si no, usamos primaryAction como respaldo
+  const renderAction = action || primaryAction;
+
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-border shrink-0 animate-fade-in">
       <div className="flex items-center gap-3">
@@ -49,7 +54,6 @@ export function ModuleHeader({
             <h1 className="text-xl font-bold text-foreground tracking-tight">
               {title}
             </h1>
-            {/* Renderizado de Badges al lado del título */}
             {badges && <div className="flex items-center gap-2">{badges}</div>}
           </div>
           {subtitle && <p className="text-sm text-muted mt-0.5">{subtitle}</p>}
@@ -66,7 +70,7 @@ export function ModuleHeader({
             {kpiButtonText}
           </Button>
         )}
-        {primaryAction && primaryAction}
+        {renderAction && renderAction}
       </div>
     </div>
   );

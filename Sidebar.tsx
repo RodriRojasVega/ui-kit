@@ -13,6 +13,7 @@ export interface NavItem {
   label: string;
   icon: ReactNode;
   onClick: () => void;
+  special?: boolean; // <-- Añade esta línea
 }
 
 interface SidebarProps {
