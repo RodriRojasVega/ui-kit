@@ -123,11 +123,13 @@ Campo de entrada minimalista, diseñado con borde inferior estilizado y soporte 
 | ...props | InputHTMLAttributes | Soporta atributos nativos HTML de input. |
 
 ### Ejemplo de uso
+```tsx
 import { Input } from '@/components/ui/Input';
 
 export function Form() {
   return <Input label="Precio" placeholder="0.00" prefix="$" type="number" />;
 }
+```
 
 ---
 
@@ -143,6 +145,7 @@ Ventana emergente modal con efecto de backdrop blur, gestión de z-index y cierr
 | children | ReactNode | Contenido interno. |
 
 ### Ejemplo de uso
+```tsx
 import { Modal } from '@/components/ui/Modal';
 
 export function Confirmation() {
@@ -152,6 +155,7 @@ export function Confirmation() {
     </Modal>
   );
 }
+```
 
 ---
 
@@ -169,6 +173,7 @@ Cabecera estandarizada para módulos, incluye navegación, etiquetas (badges), K
 | primaryAction | ReactNode | Acción principal (Botón). |
 
 ### Ejemplo de uso
+```tsx
 import { ModuleHeader } from '@/components/ui/ModuleHeader';
 import { Button } from '@/components/ui/Button';
 
@@ -181,6 +186,7 @@ export function HeaderExample() {
     />
   );
 }
+```
 
 ---
 
@@ -195,13 +201,14 @@ Navegación horizontal tipo "píldora", ideal para filtrar vistas sin cambiar de
 | onChange | function | Callback de cambio. |
 
 ### Ejemplo de uso
+```tsx
 import { PillNavigation } from '@/components/ui/PillNavigation';
 
 export function FilterView() {
   const options = [{id: 'all', label: 'Todos'}, {id: 'active', label: 'Activos'}];
   return <PillNavigation activeId="all" onChange={(id) => console.log(id)} options={options} />;
 }
-
+```
 
 ## 12. Select (Select.tsx)
 Menú desplegable estilizado con soporte para etiquetas superiores y un icono de chevron personalizado.
@@ -214,6 +221,7 @@ Menú desplegable estilizado con soporte para etiquetas superiores y un icono de
 | ...props | SelectHTMLAttributes | Atributos nativos del elemento select. |
 
 ### Ejemplo de uso
+```tsx
 import { Select } from '@/components/ui/Select';
 
 export function SelectExample() {
@@ -223,6 +231,7 @@ export function SelectExample() {
     </Select>
   );
 }
+```
 
 ---
 
@@ -239,14 +248,17 @@ Panel de navegación lateral colapsable, ideal para layouts principales con sopo
 | logo | ReactNode | Logo opcional para el encabezado. |
 
 ### Interfaz NavItem
+```typescript
 interface NavItem {
   id: string;
   label: string;
   icon: ReactNode;
   onClick: () => void;
 }
+```
 
 ### Ejemplo de uso
+```tsx
 import { Sidebar, type NavItem } from '@/components/ui/Sidebar';
 import { Home } from 'lucide-react';
 
@@ -256,6 +268,7 @@ export function Navigation() {
   ];
   return <Sidebar items={items} activeId="home" isCollapsed={false} onToggleCollapse={() => {}} />;
 }
+```
 
 ---
 
@@ -269,18 +282,22 @@ Renderizador de listas de pasos secuenciales numerados, con soporte para destaca
 | emptyMessage | string | Mensaje opcional si la lista está vacía. |
 
 ### Interfaz Step
+```typescript
 interface Step {
   descripcion: string;
   isCritical?: boolean;
 }
+```
 
 ### Ejemplo de uso
+```tsx
 import { StepList } from '@/components/ui/StepList';
 
 export function RecipeSteps() {
   const steps = [{ descripcion: 'Mezclar ingredientes', isCritical: false }];
   return <StepList steps={steps} />;
 }
+```
 
 ---
 
@@ -296,12 +313,17 @@ Tarjeta métrica de resumen optimizada para mostrar KPIs y valores numéricos de
 | valueClassName | string | Clases CSS personalizadas para el valor. |
 
 ### Ejemplo de uso
+```tsx
 import { SummaryCard } from '@/components/ui/SummaryCard';
 import { Badge } from '@/components/ui/Badge';
 
 export function Metric() {
   return <SummaryCard label="Ventas Totales" value="$45.000" badge={<Badge variant="success">+12%</Badge>} />;
 }
+
+```
+
+---
 
 ## 16. Table y Subcomponentes (Table.tsx)
 Sistema completo de tablas de datos que incluye contenedores, cabeceras, filas interactivas, celdas alineadas, barra de herramientas con búsqueda y selector de límites, y paginación.
@@ -316,6 +338,7 @@ Sistema completo de tablas de datos que incluye contenedores, cabeceras, filas i
 - **TablePagination**: Pie de paginación (`paginaActual`, `totalPaginas`, `onCambiarPagina`, `elementosMostrados`, `totalElementos`).
 
 ### Ejemplo de uso
+```tsx
 import { Table, TableHead, TableBody, TableRow, TableCell, TableHeaderCell } from '@/components/ui/Table';
 
 export function SimpleTable() {
@@ -334,6 +357,7 @@ export function SimpleTable() {
     </Table>
   );
 }
+```
 
 ---
 
@@ -355,6 +379,7 @@ Navegación por pestañas personalizables con soporte para iconos, colores temá
 | children | ReactNode | Contenido del panel. |
 
 ### Ejemplo de uso
+```tsx
 import { Tabs, TabPanel } from '@/components/ui/Tabs';
 import { useState } from 'react';
 
@@ -370,6 +395,7 @@ export function TabbedView() {
     </>
   );
 }
+```
 
 ---
 
@@ -383,11 +409,13 @@ Campo de texto multilínea estilizado con soporte para manejo de errores de vali
 | ...props | TextareaHTMLAttributes | Atributos nativos de textarea. |
 
 ### Ejemplo de uso
+```tsx
 import { Textarea } from '@/components/ui/Textarea';
 
 export function CommentBox() {
   return <Textarea placeholder="Escribe tus notas..." rows={4} />;
 }
+```
 
 ---
 
@@ -402,9 +430,11 @@ Selector de modo de vista (por ejemplo, alternar entre grilla y lista) con boton
 | onChange | function | Callback que recibe el ID de la nueva vista seleccionada. |
 
 ### Ejemplo de uso
+```tsx
 import { ViewToggle } from '@/components/ui/ViewToggle';
 
 export function ToggleExample() {
   const views = [{ id: 'grid', label: 'Grilla' }, { id: 'list', label: 'Lista' }];
   return <ViewToggle options={views} activeId="grid" onChange={(id) => console.log(id)} />;
 }
+```
