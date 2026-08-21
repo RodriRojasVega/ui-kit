@@ -1,4 +1,4 @@
-# UI Kit Maestro 2.0 - Manual de Referencia Técnica
+# UI Kit Maestro 2.1 - Manual de Referencia Técnica
 
 Este documento contiene la especificación, propiedades y ejemplos de uso de los componentes modulares de la interfaz. Todos los componentes están construidos sobre React, utilizan Tailwind CSS para el diseño y dependen de `clsx` y `tailwind-merge` para la resolución dinámica de clases.
 
