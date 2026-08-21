@@ -8,6 +8,7 @@ function cn(...inputs: ClassValue[]) {
 
 interface Step {
   descripcion: string;
+  isCritical?: boolean; // <- Nueva propiedad añadida
 }
 
 interface StepListProps {
@@ -28,12 +29,32 @@ export function StepList({ steps, emptyMessage = "No hay pasos registrados.", cl
   return (
     <div className={cn("space-y-3", className)}>
       {steps.map((step, idx) => (
-        <div key={idx} className="flex gap-4 text-sm text-foreground bg-surface p-4 rounded-xl border border-border shadow-sm">
+        <div 
+          key={idx} 
+          className={cn(
+            "flex gap-4 text-sm text-foreground p-4 rounded-xl border shadow-sm relative overflow-hidden",
+            step.isCritical ? "bg-danger/5 border-danger/30" : "bg-surface border-border"
+          )}
+        >
+          {/* Barra lateral roja indicadora si es crítico */}
+          {step.isCritical && <div className="absolute left-0 top-0 bottom-0 w-1 bg-danger" />}
+          
           {/* Círculo numérico */}
-          <div className="flex shrink-0 items-center justify-center w-7 h-7 rounded-full bg-primary/15 text-primary font-mono font-bold text-xs border border-primary/20">
+          <div className={cn(
+            "flex shrink-0 items-center justify-center w-7 h-7 rounded-full font-mono font-bold text-xs border",
+            step.isCritical ? "bg-danger/20 text-danger border-danger/30" : "bg-primary/15 text-primary border-primary/20"
+          )}>
             {idx + 1}
           </div>
-          <p className="leading-relaxed mt-1">{step.descripcion}</p>
+          
+          <div className="flex-1 mt-0.5">
+            {step.isCritical && (
+              <span className="text-[9px] bg-danger text-white px-1.5 py-0.5 rounded font-bold uppercase tracking-wider mb-1.5 inline-block">
+                Paso Crítico
+              </span>
+            )}
+            <p className="leading-relaxed">{step.descripcion}</p>
+          </div>
         </div>
       ))}
     </div>
