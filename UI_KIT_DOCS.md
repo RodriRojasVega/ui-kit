@@ -1,4 +1,4 @@
-# UI Kit Maestro 2.1 - Manual de Referencia Técnica
+# UI Kit Maestro 2.2 - Manual de Referencia Técnica
 
 Este documento contiene la especificación, propiedades y ejemplos de uso de los componentes modulares de la interfaz. Todos los componentes están construidos sobre React, utilizan Tailwind CSS para el diseño y dependen de `clsx` y `tailwind-merge` para la resolución dinámica de clases.
 
@@ -68,15 +68,17 @@ export function ActionBar() {
 
 ---
 
-## 3. Calendar (`Calendar.tsx`)
-Grilla mensual interactiva diseñada para visualizar eventos categorizados por estado. Incluye navegación nativa entre meses y maneja internamente la lógica de agrupación por fechas.
+## 3. Calendar (Calendar.tsx)
+Grilla mensual interactiva estructurada por año y mes, diseñada para visualizar eventos categorizados por estado con soporte para scroll interno por día.
 
 ### Propiedades
 
 | Propiedad | Tipo | Valor por defecto | Descripción |
 | :--- | :--- | :--- | :--- |
-| `events` | `CalendarEvent[]`| Requerido | Arreglo de eventos a renderizar en la grilla. |
-| `onSelectEvent`| `function` | `undefined` | Callback que se ejecuta al hacer clic en un evento. Recibe el `id` del evento. |
+| `events` | `CalendarEvent[]` | Requerido | Arreglo de eventos a renderizar en la grilla. |
+| `year` | `number` | Requerido | Año numérico a desplegar (ej. 2026). |
+| `month` | `number` | Requerido | Índice numérico del mes (0 = Enero, 11 = Diciembre). |
+| `onSelectEvent`| `function` | `undefined` | Callback que se ejecuta al hacer clic en un evento. Recibe el `id`. |
 | `className`| `string` | `undefined` | Clases adicionales para el contenedor principal. |
 
 ### Interfaz `CalendarEvent`
@@ -93,19 +95,14 @@ interface CalendarEvent {
 ```tsx
 import { Calendar, type CalendarEvent } from '@/components/ui/Calendar';
 
-const mockEvents: CalendarEvent[] = [
-  { id: 1, title: 'Reunión Kickoff', date: '2026-08-21', status: 'confirmado' },
-  { id: 2, title: 'Despliegue PWA', date: '2026-08-25', status: 'en_produccion' }
+const events: CalendarEvent[] = [
+  { id: 1, title: 'Evento Corporativo', date: '2026-08-22', status: 'confirmado' }
 ];
 
-export function DashboardCalendar() {
-  const handleEventClick = (id: string | number) => {
-    console.log('Evento seleccionado:', id);
-  };
-
+export function MonthView() {
   return (
     <div className="h-[600px]">
-      <Calendar events="{mockEvents}" onSelectEvent="{handleEventClick}"/>
+      <Calendar events="{events}" month="{7}" onSelectEvent="{(id)" year="{2026}"> console.log(id)} />
     </div>
   );
 }
@@ -160,29 +157,34 @@ export function Confirmation() {
 ---
 
 ## 10. ModuleHeader (ModuleHeader.tsx)
-Cabecera estandarizada para módulos, incluye navegación, etiquetas (badges), KPIs y acciones primarias.
+Cabecera estandarizada para módulos y centros de mando, con soporte para botones de retorno contextuales, alternadores de KPIs, insignias y acciones primarias personalizables.
 
 ### Propiedades
-| Propiedad | Tipo | Descripción |
-| :--- | :--- | :--- |
-| title | string | Título principal. |
-| subtitle | string | Subtítulo opcional. |
-| icon | ReactNode | Icono opcional. |
-| badges | ReactNode | Etiquetas (Badges). |
-| backAction | function | Botón volver. |
-| primaryAction | ReactNode | Acción principal (Botón). |
+| Propiedad | Tipo | Valor por defecto | Descripción |
+| :--- | :--- | :--- | :--- |
+| `title` | `ReactNode` | Requerido | Título principal (puede ser texto o nodo). |
+| `subtitle` | `string` | `undefined` | Subtítulo opcional descriptivo. |
+| `icon` | `ReactNode` | `undefined` | Icono principal contenedor. |
+| `badges` | `ReactNode` | `undefined` | Elementos de etiqueta o Badges asociados. |
+| `showKpis` | `boolean` | `undefined` | Estado activo para el botón de toggle de KPIs. |
+| `onToggleKpis` | `function` | `undefined` | Callback ejecutado al accionar el botón de KPIs. |
+| `kpiButtonText`| `string` | `'KPIs'` | Texto del botón de métricas. |
+| `primaryAction`| `ReactNode` | `undefined` | Nodo de acción principal a la derecha. |
+| `action` | `ReactNode` | `undefined` | Nodo alternativo de acción (alias de primaryAction). |
+| `backAction` | `function` | `undefined` | Función callback para el botón de retroceso. |
+| `backLabel` | `string` | `'Volver'` | Texto personalizado del botón de retroceso. |
+| `backOnRight`| `boolean` | `false` | Posiciona el botón de retroceso a la derecha dentro de la botonera. |
 
 ### Ejemplo de uso
 ```tsx
 import { ModuleHeader } from '@/components/ui/ModuleHeader';
-import { Button } from '@/components/ui/Button';
+import { Badge } from '@/components/ui/Badge';
 
 export function HeaderExample() {
   return (
-    <ModuleHeader 
-      backAction={() => console.log('Volver')} 
-      title="Gestión de Stock"
-      primaryAction={<Button>Nuevo Insumo</Button>}
+    <ModuleHeader backAction="{()"> console.log('Volver')} 
+      title="Evento 001"
+      badges={<Badge variant="success">Corporativo</Badge>}
     />
   );
 }
@@ -420,14 +422,15 @@ export function CommentBox() {
 ---
 
 ## 19. ViewToggle (ViewToggle.tsx)
-Selector de modo de vista (por ejemplo, alternar entre grilla y lista) con botones estilizados e iconos.
+Selector flotante y minimalista de modo de vista (por ejemplo, alternar entre grilla, calendario o lista) con soporte para iconos y estilos activos fluidos.
 
 ### Propiedades
-| Propiedad | Tipo | Descripción |
-| :--- | :--- | :--- |
-| options | ViewOption[] | Arreglo de opciones ({ id, label, icon? }). |
-| activeId | string | ID de la vista activa. |
-| onChange | function | Callback que recibe el ID de la nueva vista seleccionada. |
+| Propiedad | Tipo | Valor por defecto | Descripción |
+| :--- | :--- | :--- | :--- |
+| `options` | `ViewOption[]` | Requerido | Arreglo de opciones ({ id, label, icon? }). |
+| `activeId` | `string` | Requerido | ID de la vista seleccionada actualmente. |
+| `onChange` | `function` | Requerido | Callback que recibe el ID de la nueva vista seleccionada. |
+| `className`| `string` | `undefined` | Clases CSS adicionales para el contenedor. |
 
 ### Ejemplo de uso
 ```tsx
@@ -435,6 +438,33 @@ import { ViewToggle } from '@/components/ui/ViewToggle';
 
 export function ToggleExample() {
   const views = [{ id: 'grid', label: 'Grilla' }, { id: 'list', label: 'Lista' }];
-  return <ViewToggle options={views} activeId="grid" onChange={(id) => console.log(id)} />;
+  return <ViewToggle activeId="grid" onChange="{(id)" options="{views}"> console.log(id)} />;
 }
-```
+---
+
+## 20. EventDashboardCard (EventDashboardCard.tsx)
+Tarjeta de resumen ejecutiva diseñada específicamente para el Centro de Mando B2B, optimizada para mostrar métricas de aforo, locaciones o KPIs del evento con un diseño flotante y minimalista.
+
+### Propiedades
+
+| Propiedad | Tipo | Valor por defecto | Descripción |
+| :--- | :--- | :--- | :--- |
+| `label` | `string` | Requerido | Etiqueta descriptiva superior de la métrica. |
+| `value` | `ReactNode` | Requerido | Valor principal destacado (número, texto o componente). |
+| `icon` | `ReactNode` | `undefined` | Icono contextual opcional renderizado en la esquina superior. |
+| `badge` | `ReactNode` | `undefined` | Etiqueta o Badge de estado opcional. |
+| `className`| `string` | `undefined` | Clases adicionales de Tailwind para estilos personalizados. |
+
+### Ejemplo de uso
+```tsx
+import { EventDashboardCard } from '@/components/ui/EventDashboardCard';
+import { Badge } from '@/components/ui/Badge';
+import { Users } from 'lucide-react';
+
+export function KPIMetric() {
+  return (
+    <EventDashboardCard icon="{<Users" label="PAX Confirmados" size="{18}" value="600"/>} 
+      badge={<Badge variant="success">Activo</Badge>} 
+    />
+  );
+}
