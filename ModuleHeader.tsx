@@ -12,9 +12,11 @@ export interface ModuleHeaderProps {
   onToggleKpis?: () => void;
   kpiButtonText?: string;
   primaryAction?: ReactNode;
-  action?: ReactNode; // <-- Añadido para compatibilidad con todos los módulos
+  action?: ReactNode;
   backAction?: () => void;
   backLabel?: string;
+  // NUEVA PROP: Permite colocar el botón volver a la derecha dentro de la botonera
+  backOnRight?: boolean;
 }
 
 export function ModuleHeader({
@@ -26,17 +28,18 @@ export function ModuleHeader({
   onToggleKpis,
   kpiButtonText = 'KPIs',
   primaryAction,
-  action, // <-- Capturamos la prop action
+  action,
   backAction,
-  backLabel = 'Volver'
+  backLabel = 'Volver',
+  backOnRight = false
 }: ModuleHeaderProps) {
-  // Usamos action si está presente, si no, usamos primaryAction como respaldo
   const renderAction = action || primaryAction;
 
   return (
     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-3 border-b border-border shrink-0 animate-fade-in">
       <div className="flex items-center gap-3">
-        {backAction && (
+        {/* Solo renderizamos a la izquierda si backAction existe y NO se pidió a la derecha */}
+        {backAction && !backOnRight && (
           <div className="pr-2 border-r border-border mr-1">
             <Button variant="ghost" size="sm" icon={<ArrowLeft size={16} />} onClick={backAction}>
               {backLabel}
@@ -61,6 +64,13 @@ export function ModuleHeader({
       </div>
 
       <div className="flex items-center gap-2">
+        {/* Si backOnRight es true y hay backAction, lo metemos primero en la botonera derecha */}
+        {backAction && backOnRight && (
+          <Button variant="secondary" size="sm" icon={<ArrowLeft size={15} />} onClick={backAction}>
+            {backLabel}
+          </Button>
+        )}
+
         {onToggleKpis && (
           <Button 
             variant={showKpis ? 'primary' : 'secondary'} 

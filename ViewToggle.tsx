@@ -20,7 +20,8 @@ interface ViewToggleProps {
 
 export function ViewToggle({ options, activeId, onChange, className }: ViewToggleProps) {
   return (
-    <div className={cn("inline-flex bg-slate-900 border border-slate-800 rounded-xl p-1 gap-1", className)}>
+    // ELIMINAMOS el 'border border-border/50' y dejamos solo el contenedor flex (Punto 2)
+    <div className={cn("inline-flex gap-1", className)}>
       {options.map((opt) => {
         const isActive = opt.id === activeId;
         return (
@@ -31,8 +32,8 @@ export function ViewToggle({ options, activeId, onChange, className }: ViewToggl
             className={cn(
               "flex items-center gap-2 px-3 py-1.5 text-xs font-bold rounded-lg transition-all cursor-pointer outline-none",
               isActive
-                ? "bg-emerald-600 text-white shadow-md"
-                : "text-slate-400 hover:text-white hover:bg-slate-800/50"
+                ? "bg-primary text-white shadow-sm"
+                : "text-muted hover:text-foreground bg-transparent"
             )}
           >
             {opt.icon && <span>{opt.icon}</span>}

@@ -5,6 +5,7 @@ export { Calendar } from './Calendar';
 export { DualAsignador } from './DualAsignador';
 export { DynamicIngredientRow } from './DynamicIngredientRow';
 export { DynamicRow } from './DynamicRow';
+export { EventDashboardCard } from './EventDashboardCard';
 export { Input } from './Input';
 export { ModuleHeader } from './ModuleHeader';
 export { Select } from './Select';
