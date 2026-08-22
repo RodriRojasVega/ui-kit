@@ -440,6 +440,8 @@ export function ToggleExample() {
   const views = [{ id: 'grid', label: 'Grilla' }, { id: 'list', label: 'Lista' }];
   return <ViewToggle activeId="grid" onChange="{(id)" options="{views}"> console.log(id)} />;
 }
+```
+
 ---
 
 ## 20. EventDashboardCard (EventDashboardCard.tsx)
